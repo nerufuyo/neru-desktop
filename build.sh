@@ -66,7 +66,7 @@ chmod 755 "$W"/neru-digup-shell/DEBIAN/{preinst,postrm,postinst}
 ARCH=amd64 pack neru-digup-shell
 
 # --- Defaults for every account: the extensions on, the dock's favourites
-control neru-desktop-defaults "neru-isle, neru-macos-dock, dconf-cli" "System defaults for the neru desktop: extensions on, dock favourites"
+control neru-desktop-defaults "neru-isle, neru-macos-dock, dconf-cli, python3-gi, gir1.2-gtk-4.0, gir1.2-adw-1" "System defaults for the neru desktop: extensions on, dock favourites"
 mkdir -p "$W/neru-desktop-defaults/etc/dconf/db/local.d" "$W/neru-desktop-defaults/etc/dconf/profile"
 cat > "$W/neru-desktop-defaults/etc/dconf/db/local.d/00-neru" <<'P'
 [org/gnome/shell]
@@ -75,6 +75,9 @@ favorite-apps=['org.gnome.Nautilus.desktop', 'google-chrome.desktop', 'yelp.desk
 P
 mkdir -p "$W/neru-desktop-defaults/usr/share/glib-2.0/schemas"
 cp "$HERE"/schemas/org.neru.desktop.gschema.xml "$W/neru-desktop-defaults/usr/share/glib-2.0/schemas/"
+mkdir -p "$W/neru-desktop-defaults/usr/bin" "$W/neru-desktop-defaults/usr/share/applications"
+install -m 755 "$HERE/files/neru-settings" "$W/neru-desktop-defaults/usr/bin/neru-settings"
+install -m 644 "$HERE/files/org.neru.Settings.desktop" "$W/neru-desktop-defaults/usr/share/applications/org.neru.Settings.desktop"
 printf 'user-db:user\nsystem-db:local\n' > "$W/neru-desktop-defaults/etc/dconf/profile/user"
 printf '#!/bin/sh\nglib-compile-schemas /usr/share/glib-2.0/schemas\ndconf update\nexit 0\n' > "$W/neru-desktop-defaults/DEBIAN/postinst"; chmod 755 "$W/neru-desktop-defaults/DEBIAN/postinst"
 pack neru-desktop-defaults

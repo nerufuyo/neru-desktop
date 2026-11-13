@@ -73,7 +73,9 @@ cat > "$W/neru-desktop-defaults/etc/dconf/db/local.d/00-neru" <<'P'
 enabled-extensions=['isle@zickrian.github.io', 'macos-dock@vinnytherobot.github.io', 'blur-my-shell@aunetx', 'rounded-window-corners@fxgn', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'tiling-assistant@ubuntu.com']
 favorite-apps=['org.gnome.Nautilus.desktop', 'google-chrome.desktop', 'yelp.desktop', 'orca.desktop', 'android-emulator.desktop', 'bytedance-lark.desktop', 'steam.desktop']
 P
+mkdir -p "$W/neru-desktop-defaults/usr/share/glib-2.0/schemas"
+cp "$HERE"/schemas/org.neru.desktop.gschema.xml "$W/neru-desktop-defaults/usr/share/glib-2.0/schemas/"
 printf 'user-db:user\nsystem-db:local\n' > "$W/neru-desktop-defaults/etc/dconf/profile/user"
-printf '#!/bin/sh\ndconf update\nexit 0\n' > "$W/neru-desktop-defaults/DEBIAN/postinst"; chmod 755 "$W/neru-desktop-defaults/DEBIAN/postinst"
+printf '#!/bin/sh\nglib-compile-schemas /usr/share/glib-2.0/schemas\ndconf update\nexit 0\n' > "$W/neru-desktop-defaults/DEBIAN/postinst"; chmod 755 "$W/neru-desktop-defaults/DEBIAN/postinst"
 pack neru-desktop-defaults
 ls -la "$OUT"
